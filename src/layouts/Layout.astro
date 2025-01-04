@@ -1,0 +1,37 @@
+---
+import { SEOProps, generateSEOMetadata } from '../utils/seo';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  seo?: SEOProps;
+}
+
+const { title, seo } = Astro.props;
+const seoMetadata = seo ? generateSEOMetadata(seo) : null;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    
+    {seoMetadata && seoMetadata.map(meta => (
+      'rel' in meta 
+        ? <link {...meta} />
+        : <meta {...meta} />
+    ))}
+    
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-gray-50 to-primary-50">
+    <Header />
+    <slot />
+    <Footer />
+  </body>
+</html>
